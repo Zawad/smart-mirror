@@ -1,13 +1,14 @@
 (function(angular) {
     'use strict';
 
-    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, HueService, $scope, $timeout) {
+    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, StockService, SportsService, $scope, $timeout) {
         var _this = this;
         $scope.listening = false;
         $scope.debug = false;
-        $scope.complement = "Hi, sexy!"
+        $scope.complement = "Hi, buddy!"
         $scope.focus = "default";
         $scope.user = {};
+        $scope.stock = {};
 
         $scope.colors=["#6ed3cf", "#9068be", "#e1e8f0", "#e62739"];
 
@@ -18,9 +19,20 @@
         };
 
         _this.init = function() {
-            $scope.map = MapService.generateMap("Seattle,WA");
+            $scope.map = MapService.generateMap("Blacksburg,VA");
             _this.clearResults();
             tick();
+
+            StockService.init("Alphabet").then(function(){
+                $scope.stock = StockService.currentStock();
+                console.log($scope.stock);
+            });
+
+            // SportsService.init("Redskins").then(function(){
+            //     $scope.football = StockService.currentSchedule();
+            //     console.log($scope.football);
+            // });
+
 
             //Get our location and then get the weather for our location
             GeolocationService.getLocation().then(function(geoposition){
@@ -36,8 +48,6 @@
                 });
             })
 
-            //Initiate Hue communication
-            HueService.init();
 
             var defaultView = function() {
                 console.debug("Ok, going to default view...");
@@ -102,9 +112,9 @@
             });
 
             // Search images
-            AnnyangService.addCommand('Show me *term', function(term) {
+            /*AnnyangService.addCommand('Show me *term', function(term) {
                 console.debug("Showing", term);
-            });
+            });*/
 
             // Change name
             AnnyangService.addCommand('My (name is)(name\'s) *name', function(name) {
@@ -112,7 +122,16 @@
                 $scope.user.name = name;
             });
 
-            // Set a reminder
+            //Set Stock
+            AnnyangService.addCommand('Set stock (to) *company', function(company) {
+                console.debug("I'll will add", company);
+                StockService.init(company).then(function(){
+                    $scope.stock = StockService.currentStock();
+                    console.log($scope.stock);
+                });
+            });
+
+            /*// Set a reminder
             AnnyangService.addCommand('Remind me to *task', function(task) {
                 console.debug("I'll remind you to", task);
             });
@@ -120,7 +139,7 @@
             // Clear reminders
             AnnyangService.addCommand('Clear reminders', function() {
                 console.debug("Clearing reminders");
-            });
+            });*/
 
             // Clear log of commands
             AnnyangService.addCommand('Clear results', function(task) {
@@ -134,10 +153,10 @@
                  _this.clearResults();
             });
 
-            // Turn lights off
+            /*// Turn lights off
             AnnyangService.addCommand('(turn) (the) :state (the) light(s) *action', function(state, action) {
                 HueService.performUpdate(state + " " + action);
-            });
+            });*/
 
             // Fallback for all commands
             AnnyangService.addCommand('*allSpeech', function(allSpeech) {
