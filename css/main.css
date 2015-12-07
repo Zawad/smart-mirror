@@ -35,7 +35,9 @@ dt {
 .grey {
     color: #999;
 }
-
+ .nfl, .stock{
+    color:#fff;
+ }
 /* Displays */
 .sleep-cover {
     background-color: black;
@@ -70,11 +72,11 @@ dt {
 }
 
 .date {
-    font-size: 42px;
+    font-size: 35px;
 }
 
 .time {
-    font-size: 110px;
+    font-size: 95px;
 }
 
 .top-right {
@@ -105,38 +107,47 @@ dt {
     margin-left: auto;
     margin-right: auto;
 }
-
-.weather {
+.response {
+    font-size: 65px;
+}
+.weather, .updates {
     margin-left: auto;
     display: inline-block;
     text-align: right;
 }
 
-.weather-today .tempreture {
-    font-size: 80px;
+.weather-today .tempreture
+,.stock-today .symbol
+,.nfl-today .league 
+,.reminders-today .list{
+    font-size: 65px;
 }
 
-.weather-week-descriptor {
+.reminders-today .list{
+    padding-left: 15px;
+}
+
+.weather-week-descriptor{
     font-family: 'Open Sans', sans-serif;
-    font-size: 12px;
-    max-width: 55%;
+    font-size: 15px;
+    max-width: 45%;
     margin-left: auto;
     margin-bottom: 10px;
     text-align: justify;
 }
 
-.weather-week {
+.weather-week, .stock-udpate, .nfl-matchup, .to-do-list {
     margin-right: 10px;
     font-size: 22px;
 }
 
-.weather-week .day {
+.weather-week .day,.nfl .hs,.nfl .dash,.nfl .vs {
     display: inline-block;
     margin-right: 10px;
     width: 50px;
 }
 
-.weather-week .tempreture {
+.weather-week .tempreture{
     display: inline-block;
     width: 60px;
 }

@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
 
-    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, StockService, SportsService, $scope, $timeout) {
+    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, StockService, NflService, NbaService, $scope, $timeout) {
         var _this = this;
         $scope.listening = false;
         $scope.debug = false;
@@ -9,6 +9,7 @@
         $scope.focus = "default";
         $scope.user = {};
         $scope.stock = {};
+        $scope.reminders = [];
 
         $scope.colors=["#6ed3cf", "#9068be", "#e1e8f0", "#e62739"];
 
@@ -28,10 +29,15 @@
                 console.log($scope.stock);
             });
 
-            // SportsService.init("Redskins").then(function(){
-            //     $scope.football = StockService.currentSchedule();
-            //     console.log($scope.football);
-            // });
+            NflService.init("Redskins").then(function(){
+                $scope.football = NflService.currentFootballMatchUp();
+                console.log($scope.football);
+            });
+
+            NbaService.init("test").then(function(){
+                $scope.basketball = NbaService.currentSchedule();
+                console.log($scope.basketball);
+            })
 
 
             //Get our location and then get the weather for our location
@@ -68,6 +74,7 @@
             AnnyangService.addCommand('Go to sleep', function() {
                 console.debug("Ok, going to sleep...");
                 $scope.focus = "sleep";
+                $scope.complement = "Ok, Goodbye :)";
             });
 
             // Go back to default view
@@ -77,12 +84,14 @@
             AnnyangService.addCommand('Show debug information', function() {
                 console.debug("Boop Boop. Showing debug info...");
                 $scope.debug = true;
+                $scope.complement = "Ok, Showing debug info...";
             });
 
             // Hide everything and "sleep"
             AnnyangService.addCommand('Show map', function() {
                 console.debug("Going on an adventure?");
                 $scope.focus = "map";
+                $scope.complement = "Going on an adventure?";
             });
 
             // Hide everything and "sleep"
@@ -90,12 +99,15 @@
                 console.debug("Getting map of", location);
                 $scope.map = MapService.generateMap(location);
                 $scope.focus = "map";
+                $scope.complement = "Getting map of " +location;
+
             });
 
             // Zoom in map
             AnnyangService.addCommand('Map zoom in', function() {
                 console.debug("Zoooooooom!!!");
                 $scope.map = MapService.zoomIn();
+                $scope.complement = "Zoooooooom!!!";
                 $scope.focus = "map";
             });
 
@@ -103,11 +115,13 @@
                 console.debug("Moooooooooz!!!");
                 $scope.map = MapService.zoomOut();
                 $scope.focus = "map";
+                $scope.complement = "Moooooooooz!!!";
             });
 
             AnnyangService.addCommand('Map reset zoom', function() {
                 console.debug("Zoooommmmmzzz00000!!!");
                 $scope.map = MapService.reset();
+                $scope.complement = "Reset!!!";
                 $scope.focus = "map";
             });
 
@@ -119,27 +133,53 @@
             // Change name
             AnnyangService.addCommand('My (name is)(name\'s) *name', function(name) {
                 console.debug("Hi", name, "nice to meet you");
+                $scope.complement = "Hi "+name+" nice to meet you";
                 $scope.user.name = name;
             });
 
             //Set Stock
             AnnyangService.addCommand('Set stock (to) *company', function(company) {
-                console.debug("I'll will add", company);
+                console.debug("I'll fetch", company, "stock update");
                 StockService.init(company).then(function(){
                     $scope.stock = StockService.currentStock();
                     console.log($scope.stock);
+                    $scope.complement = "I'll fetch "+company+ "'s stock update";
                 });
             });
 
-            /*// Set a reminder
+            //Set NFL Team
+            AnnyangService.addCommand('Set football (to) *team', function(team) {
+                console.debug("I'll get the", team, "matchup");
+                NflService.init(team).then(function(){
+                    $scope.football = NflService.currentFootballMatchUp();
+                    $scope.complement = "I'll get the "+team+" matchup";
+                    console.log($scope.football);
+                });
+            });
+
+            // Set a reminder
             AnnyangService.addCommand('Remind me to *task', function(task) {
                 console.debug("I'll remind you to", task);
+                $scope.reminders.push(task);
+                console.log($scope.reminders);
+            });
+
+            // Remove reminders item
+            AnnyangService.addCommand('Remove *task (from to do list)', function(task) {
+                console.debug("I'll remove", task, "from the To-Do List");
+                var i = $scope.reminders.indexOf(task);
+                if(i != -1) {
+                    $scope.reminders.splice(i,1);
+                }
+                console.log($scope.reminders);
             });
 
             // Clear reminders
             AnnyangService.addCommand('Clear reminders', function() {
                 console.debug("Clearing reminders");
-            });*/
+                $scope.reminders = [];
+                console.log($scope.reminders);
+            });
 
             // Clear log of commands
             AnnyangService.addCommand('Clear results', function(task) {

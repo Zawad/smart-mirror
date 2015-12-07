@@ -15,11 +15,12 @@
     <script src="js/annyang-service.js"></script>
     <script src="js/weather-service.js"></script>
     <script src="js/stock-service.js"></script>
-    <script src="js/sports-service.js"></script>
+    <script src="js/nfl-service.js"></script>
     <script src="js/map-service.js"></script>
     <script src="js/hue-service.js"></script>
     <script src="js/geolocation-service.js"></script>
     <script src="js/controller.js"></script>
+    <script src="js/nba-service.js"></script>
     <!-- Styles and Resources -->
     <link rel="shortcut icon" href="favicon.ico" />
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,800,700' rel='stylesheet' type='text/css'>
@@ -30,9 +31,19 @@
       <div class="top-left">
         <div class="date grey">{{date | date : 'EEEE, MMMM d yyyy'}}</div>
         <div class="time">{{date | date : 'hh:mm a'}}</div>
+        <div class="updates">
+          <div class="reminders-today">
+            <span class="list">Reminders</span>
+            <div class="to-do-list" ng-repeat="task in reminders" ng-if="$index > -1">
+              <div class="stock-udpate">
+                <span class="stock change"> - {{task}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="top-right">
-        <div class="weather">
+        <div class="updates">
           <div class="weather-today">
             <span class="tempreture">{{currentForcast.temperature}}&deg;</span>
           </div>
@@ -44,31 +55,37 @@
               <span class="tempreture tempreture-max">{{forcast.temperatureMax}}</span>
             </div>
           </div>
-          <div class="weather-today">
-            <span class="tempreture">{{stock.Name}}</span>
-            <div class="weather-week-day">
-              <span class="day light-grey">{{stock.Symbol}}</span>
-              <span class="day light-grey">{{stock.LastPrice}}</span>
-              <span class="day light-grey">{{stock.Change}}</span>
+          <div class="stock-today">
+            <span class="symbol">{{stock.Symbol}}</span>
+            <div class="stock-udpate">
+              <span class="stock name">{{stock.Name}}</span>
+              <span class="stock lastprice">{{stock.LastPrice}}</span>
+              <span class="stock change">{{stock.Change.toPrecision(4)}}</span>
+            </div>
+          </div>
+          <div class="nfl-today">
+            <span class="league">NFL</span>
+            <div class="nfl-matchup">
+              <span class="nfl game">{{football.hnn}} vs {{football.vnn}}</span>
+            </div>
+            <div class="nfl-matchup">
+              <span class="nfl">{{football.hs}}</span>
+              <span class="nfl"> - </span>
+              <span class="nfl">{{football.vs}}</span>
+            </div>
+            <div class="nfl-matchup">
+              <span class="nfl">{{football.d}}</span>
+              <span class="nfl">{{football.t}}</span>
             </div>
           </div>
         </div>
-          
-          <!-- <div class="weather-week-descriptor">{{weeklyForcast.summary}}</div>
-          <div class="weather-week" ng-repeat="forcast in weeklyForcast.data" ng-if="$index > 0">
-            <div class="weather-week-day">
-              <span class="day light-grey">{{forcast.day}}</span>
-              <span class="tempreture tempreture-min">{{forcast.temperatureMin}}</span>
-              <span class="tempreture tempreture-max">{{forcast.temperatureMax}}</span>
-            </div>
-          </div> -->
       </div>
     </div>
     <div class="container">
       <div class="middle-center">
-        <h1>{{complement}}</h1>
+        <!-- <div class="response">{{complement}}</div>
         <h3 ng-show="!(user.name === undefined)">{{user.name}}</h3>
-        <div class="listening" ng-show="listening">Ready: {{focus}}</div>
+        <div class="listening" ng-show="listening">Ready: {{focus}}</div> -->
         <div class="map-container animate-grow" ng-show="focus == 'map'">
           <img class="map animate-grow" ng-src="{{map}}"/>
         </div>
@@ -85,14 +102,15 @@
             <dd>Shows a list of voice commands available to you.</dd>
             <dt>Go home</dt>
             <dd>Takes you back to the home screen</dd>
-            <dt>Show me ________</dt>
-            <!-- <dd>Will show you pictures of the requested item.</dd>
+            <!-- <dt>Show me ________</dt>
+            <dd>Will show you pictures of the requested item.</dd>
             <dt>Remind me to ________</dt>
             <dd>Add something to the reminders list.</dd>
             <dt>Clear reminders</dt>
             <dd>Clears out your reminders list.</dd> -->
             <dt>Show map</dt>
             <dt>Set stock to ________</dt>
+            <dt>Set football to ________</dt>
             <dd>Shows a map of your current city.</dd>
             <dt>Show map of ________</dt>
             <dd>Shows a map of the given location.</dd>
