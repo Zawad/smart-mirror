@@ -20,7 +20,7 @@
         };
 
         _this.init = function() {
-            // $scope.map = MapService.generateMap("Blacksburg,VA");
+            $scope.map = MapService.generateMap("Blacksburg,VA");
             _this.clearResults();
             tick();
 
@@ -43,15 +43,15 @@
             //Get our location and then get the weather for our location
             GeolocationService.getLocation().then(function(geoposition){
                 console.log("Geoposition", geoposition);
-                // WeatherService.init(geoposition).then(function(){
-                //     $scope.currentForcast = WeatherService.currentForcast();
-                //     $scope.weeklyForcast = WeatherService.weeklyForcast();
-                //     console.log("Current", $scope.currentForcast);
-                //     console.log("Weekly", $scope.weeklyForcast);
-                //     //refresh the weather every hour
-                //     //this doesn't acutually updat the UI yet
-                //     //$timeout(WeatherService.refreshWeather, 3600000);
-                // });
+                WeatherService.init(geoposition).then(function(){
+                    $scope.currentForcast = WeatherService.currentForcast();
+                    $scope.weeklyForcast = WeatherService.weeklyForcast();
+                    console.log("Current", $scope.currentForcast);
+                    console.log("Weekly", $scope.weeklyForcast);
+                    //refresh the weather every hour
+                    //this doesn't acutually updat the UI yet
+                    //$timeout(WeatherService.refreshWeather, 3600000);
+                });
             })
 
 
