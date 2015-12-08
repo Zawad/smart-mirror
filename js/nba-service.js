@@ -5,12 +5,11 @@
         var service = {};
         service.team = null;
         service.teamid = null;
-        service.schedule = null;
-
+        service.schedule = [];
         service.today = new Date();
         var scores = null;
-        //var ACCESS_TOKEN = '10499906-996c-4bbc-9bb1-de73e2b32a41';
         var formatTime;
+        var findRecentGames;
         service.init = function(team) {
             service.team = team;
             
@@ -20,13 +19,16 @@
                 then(function(response) {
                     var teams = response.data;
                     for (var i = 0; i < teams.length; i++) {
-                        if (teams[i].last_name == service.team) {
+                        if (teams[i].last_name.toLowerCase() == service.team.toLowerCase()) {
                             service.teamid = teams[i].team_id;
                         }
                     };
                 });            
         };
         service.currentSchedule = function() {
+            if(service.teamid === null){
+                return null;
+            }
             var untilmonth = service.today.getMonth()+1;
             var sincemonth = untilmonth;
             var untilday = service.today.getDate()+4;
@@ -38,7 +40,6 @@
                     sincemonth = sincemonth+12;
                 }
             }
-            
             untilmonth = ("0" + untilmonth).slice(-2);
             untilday = ("0"+untilday).slice(-2);
             sincemonth = ("0"+sincemonth).slice(-2);
@@ -53,14 +54,30 @@
                     }
                 }).
                     then(function(response) {
-                        console.log("NBA");
-                        service.schedule = response.data;
+                        findRecentGames(response);
                         formatTime(service.schedule);
                         return service.schedule;
                     });
         }
 
+        findRecentGames = function(response) {
+            for (var i = 0; i < response.data.length; i++) {
+                var curday = response.data[i].event_start_date_time.split("T")[0];
+                var m = service.today.getMonth()+1
+                var d = ("0"+service.today.getDate()).slice(-2);
+                var day = '2015-'+m+'-'+d;
+                if (curday < day) {
+                    service.schedule.push(response.data[i]);
+                    service.schedule.push(response.data[i-1]);
+                    break;
+                }
+            };
+        };
+
         formatTime = function(schedule) {
+            if(schedule === null){
+                return null;
+            }
             var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
             for (var i = 0; i < schedule.length; i++) {
                 var d = new Date(schedule[i].event_start_date_time);
