@@ -1,2 +1,3 @@
 var FORCAST_API_KEY = "{YOUR_KEY_HERE}";
+var ERIKBERG_ACCESS_TOKEN = "10499906-996c-4bbc-9bb1-de73e2b32a41";
 var HUE_BASE = "http://{IP_ADDRESS_OF_BRIDGE}/api/{Username}/";
