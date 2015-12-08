@@ -54,13 +54,8 @@
                     }
                 }).
                     then(function(response) {
-<<<<<<< HEAD
                         findRecentGames(response);
-=======
-                        // console.log("NBA");
-                        service.schedule = response.data;
->>>>>>> origin/master
-                        formatTime(service.schedule);
+=======                 formatTime(service.schedule);
                         return service.schedule;
                     });
         }
