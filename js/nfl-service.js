@@ -16,6 +16,9 @@
         };
 
         service.currentFootballMatchUp = function() {
+            if(service.schedule === null){
+                return null;
+            }
             var games = service.schedule.gms;
             for (var i = 0; i < games.length; i++) {
                 if(games[i].hnn == service.team || games[i].vnn == service.team ) {

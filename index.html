@@ -16,11 +16,12 @@
     <script src="js/weather-service.js"></script>
     <script src="js/stock-service.js"></script>
     <script src="js/nfl-service.js"></script>
+    <script src="js/nba-service.js"></script>
+    <script src="js/mlb-service.js"></script>
     <script src="js/map-service.js"></script>
     <script src="js/hue-service.js"></script>
     <script src="js/geolocation-service.js"></script>
     <script src="js/controller.js"></script>
-    <script src="js/nba-service.js"></script>
     <!-- Styles and Resources -->
     <link rel="shortcut icon" href="favicon.ico" />
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,800,700' rel='stylesheet' type='text/css'>
@@ -68,16 +69,42 @@
             <div class="nfl-matchup">
               <span class="nfl game">{{football.hnn}} vs {{football.vnn}}</span>
             </div>
-            <div class="nfl-matchup">
+            <div class="nfl-matchup" ng-hide="football.hs == 0 && football.hs == 0">
               <span class="nfl">{{football.hs}}</span>
               <span class="nfl"> - </span>
               <span class="nfl">{{football.vs}}</span>
             </div>
             <div class="nfl-matchup">
               <span class="nfl">{{football.d}}</span>
-              <span class="nfl">{{football.t}}</span>
+              <span class="nfl">{{football.t}} PM</span>
             </div>
           </div>
+          <div class="nba-today">
+            <span class="league">NBA</span>
+            <div ng-repeat="b in basketball.$$state.value" ng-if="$index > -1">
+              <div class="nba-matchup">
+                <span class="nba game">{{b.team.last_name}} vs {{b.opponent.last_name}}</span>
+              </div>
+              <div class="nba-matchup" ng-hide="b.team_points_scored == -1 && b.opponent_points_scored == -1">
+                <span class="nba">{{b.team_points_scored}}</span>
+                <span class="nba"> - </span>
+                <span class="nba">{{b.opponent_points_scored}}</span>
+              </div>
+              <div class="nba-matchup">
+                <span class="nba">{{b.event_start_date_time}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="mlb-today">
+            <span class="league">MLB</span>
+            <div class="mlb-matchup">
+              <span class="mlb game">{{baseball.team.last_name}}</span>
+            </div>
+            <div class="mlb-matchup">
+              <span class="mlb">{{baseball.team_events_won}}</span>
+              <span class="mlb"> - </span>
+              <span class="mlb">{{baseball.team_events_lost}}</span>
+            </div>
         </div>
       </div>
     </div>
@@ -103,17 +130,25 @@
             <dt>Go home</dt>
             <dd>Takes you back to the home screen</dd>
             <!-- <dt>Show me ________</dt>
-            <dd>Will show you pictures of the requested item.</dd>
+            <dd>Will show you pictures of the requested item.</dd>-->
             <dt>Remind me to ________</dt>
             <dd>Add something to the reminders list.</dd>
+            <dt>Remove (reminder)</dt>
+            <dd>Removes the (reminder) from the reminders list.</dd>
             <dt>Clear reminders</dt>
-            <dd>Clears out your reminders list.</dd> -->
+            <dd>Clears out your reminders list.</dd> 
             <dt>Show map</dt>
-            <dt>Set stock to ________</dt>
-            <dt>Set football to ________</dt>
             <dd>Shows a map of your current city.</dd>
             <dt>Show map of ________</dt>
             <dd>Shows a map of the given location.</dd>
+            <dt>Set stock (to) ________</dt>
+            <dd>Changes preferred stock.</dd>
+            <dt>Set football (to the) ________</dt>
+            <dd>Changes preferred football team.</dd>
+            <dt>Set basketball (to the) ________</dt>
+            <dd>Changes preferred basketball team.</dd>
+            <dt>Set baseball (to the) ________</dt>
+            <dd>Changes preferred baseball team.</dd>
           </dl>
         </div>
       </div>

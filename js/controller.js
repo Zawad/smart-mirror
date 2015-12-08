@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
 
-    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, StockService, NflService, NbaService, $scope, $timeout) {
+    function MirrorCtrl(AnnyangService, GeolocationService, WeatherService, MapService, StockService, NflService, NbaService, MlbService, $scope, $timeout) {
         var _this = this;
         $scope.listening = false;
         $scope.debug = false;
@@ -37,7 +37,12 @@
             NbaService.init("Wizards").then(function(){
                 $scope.basketball = NbaService.currentSchedule();
                 console.log($scope.basketball);
-            })
+            });
+
+            MlbService.init("Nationals").then(function(){
+                $scope.baseball = MlbService.currentSchedule();
+                console.log($scope.baseball);
+            });
 
 
             //Get our location and then get the weather for our location
@@ -148,12 +153,30 @@
             });
 
             //Set NFL Team
-            AnnyangService.addCommand('Set football (to) *team', function(team) {
+            AnnyangService.addCommand('Set football (to the)(to) *team', function(team) {
                 console.debug("I'll get the", team, "matchup");
                 NflService.init(team).then(function(){
                     $scope.football = NflService.currentFootballMatchUp();
                     $scope.complement = "I'll get the "+team+" matchup";
                     console.log($scope.football);
+                });
+            });
+
+            //Set NBA Team
+            AnnyangService.addCommand('Set basketball (to the)(to) *team', function(team) {
+                console.debug("I'll get the", team, "matchup");
+                NbaService.init(team).then(function(){
+                    $scope.basketball = NbaService.currentSchedule();
+                    console.log($scope.basketball);
+                });
+            });
+
+            //Set MLB Team
+            AnnyangService.addCommand('Set baseball (to the)(to) *team', function(team) {
+                console.debug("I'll get the", team, "matchup");
+                MlbService.init(team).then(function(){
+                    $scope.baseball = MlbService.currentSchedule();
+                    console.log($scope.baseball);
                 });
             });
 

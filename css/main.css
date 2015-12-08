@@ -35,9 +35,12 @@ dt {
 .grey {
     color: #999;
 }
- .nfl, .stock{
+.nfl
+,.nba
+,.mlb
+,.stock{
     color:#fff;
- }
+}
 /* Displays */
 .sleep-cover {
     background-color: black;
@@ -118,13 +121,15 @@ dt {
 
 .weather-today .tempreture
 ,.stock-today .symbol
-,.nfl-today .league 
+,.nfl-today .league
+,.nba-today .league
+,.mlb-today .league
 ,.reminders-today .list{
-    font-size: 65px;
+    font-size: 44px;
 }
 
 .reminders-today .list{
-    padding-left: 15px;
+    padding-left: 3px;
 }
 
 .weather-week-descriptor{
@@ -136,12 +141,18 @@ dt {
     text-align: justify;
 }
 
-.weather-week, .stock-udpate, .nfl-matchup, .to-do-list {
+.weather-week
+,.stock-udpate
+,.nfl-matchup
+,.nba-matchup
+,.mlb-matchup
+,.to-do-list {
     margin-right: 10px;
     font-size: 22px;
 }
-
-.weather-week .day,.nfl .hs,.nfl .dash,.nfl .vs {
+/*ADD MLB AND NBA DATA*/
+.weather-week .day
+,.nfl .hs,.nfl .dash,.nfl .vs {
     display: inline-block;
     margin-right: 10px;
     width: 50px;
