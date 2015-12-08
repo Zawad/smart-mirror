@@ -9,7 +9,6 @@
 
         service.today = new Date();
         var scores = null;
-        //var ACCESS_TOKEN = '10499906-996c-4bbc-9bb1-de73e2b32a41';
         var formatTime;
         service.init = function(team) {
             service.team = team;
@@ -20,13 +19,16 @@
                 then(function(response) {
                     var teams = response.data;
                     for (var i = 0; i < teams.length; i++) {
-                        if (teams[i].last_name == service.team) {
+                        if (teams[i].last_name.toLowerCase() == service.team.toLowerCase()) {
                             service.teamid = teams[i].team_id;
                         }
                     };
                 });            
         };
         service.currentSchedule = function() {
+            if(service.teamid === null){
+                return null;
+            }
             var untilmonth = service.today.getMonth()+1;
             var sincemonth = untilmonth;
             var untilday = service.today.getDate()+4;
@@ -53,7 +55,7 @@
                     }
                 }).
                     then(function(response) {
-                        console.log("NBA");
+                        // console.log("NBA");
                         service.schedule = response.data;
                         formatTime(service.schedule);
                         return service.schedule;
@@ -61,6 +63,9 @@
         }
 
         formatTime = function(schedule) {
+            if(schedule === null){
+                return null;
+            }
             var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
             for (var i = 0; i < schedule.length; i++) {
                 var d = new Date(schedule[i].event_start_date_time);

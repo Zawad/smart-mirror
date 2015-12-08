@@ -29,6 +29,9 @@
                 });            
         };
         service.currentSchedule = function() {
+            if(service.schedule === null){
+                return null;
+            }
             for (var i = 0; i < service.schedule.length; i++) {
                 if(service.schedule[i].event_season_type == "regular") {
                     return service.schedule[i];
